@@ -11,10 +11,10 @@ const Home = ({navigation}) => {
                 <Text style={styles.title}>
                     Welcome back,
                 </Text>
-                <Text style={styles.title}>
+                <Text style={[styles.title, {color: '#8F9FBF'}]}>
                     Thxnhi!
                 </Text>
-                <Image>
+                <Image style={styles.image} source={require('../../Public/avatar.png')}>
 
                 </Image>
             </View>

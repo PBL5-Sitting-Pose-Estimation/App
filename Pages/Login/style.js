@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
     },
     title:{
         fontSize: 90,
-        fontFamily: 'GrandHotel_400Regular',
+        fontFamily: 'Grand Hotel',
         fontStyle: 'normal',
         opacity: 1,
         letterSpacing: 8,

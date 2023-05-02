@@ -7,22 +7,18 @@ const styles = StyleSheet.create({
     },
     head:{
         flex: 1.2,
-        alignItems: 'center',
-        justifyContent: 'flex-end'
+        paddingStart: 20,
+        justifyContent: 'center'
     },
     title:{
-        fontSize: 90,
-        fontFamily: 'GrandHotel_400Regular',
+        fontSize: 22,
+        fontFamily: 'Nunito',
         fontStyle: 'normal',
         opacity: 1,
-        letterSpacing: 8,
-        width: 220,
-        height: 131,
-        textAlign: 'center',
-        textAlignVertical: 'center'
+        letterSpacing: 0.4
     },
     centerImage:{
-      flex: 3.6,
+      flex: 3.8,
       alignItems: 'center',
       justifyContent: 'center',
       borderWidth: 1,
@@ -32,11 +28,16 @@ const styles = StyleSheet.create({
       marginHorizontal: 20
     },
     image:{
-      width: '100%',
-      height: 220
+      position: 'absolute',
+      right: 20,
+      borderRadius: 100,
+      borderWidth: 1,
+      // borderColor: 'black',
+      width: 70,
+      height: 70,
     },
     foot:{
-      flex: 1.2,
+      flex: 1,
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'center',
