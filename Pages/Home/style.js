@@ -6,7 +6,7 @@ const styles = StyleSheet.create({
       backgroundColor: 'white'
     },
     head:{
-        flex: 0.8,
+        flex: 1.2,
         alignItems: 'center',
         justifyContent: 'flex-end'
     },
@@ -22,16 +22,22 @@ const styles = StyleSheet.create({
         textAlignVertical: 'center'
     },
     centerImage:{
-      flex: 1.1,
+      flex: 3.6,
       alignItems: 'center',
-      justifyContent: 'center'
+      justifyContent: 'center',
+      borderWidth: 1,
+      borderStyle: 'dashed',
+      borderRadius: 8,
+      borderColor: '#8F9FBF',
+      marginHorizontal: 20
     },
     image:{
       width: '100%',
       height: 220
     },
     foot:{
-      flex: 1,
+      flex: 1.2,
+      flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'center',
       gap: 14
@@ -40,7 +46,7 @@ const styles = StyleSheet.create({
       borderRadius: 12,
       color: 'white',
       backgroundColor: '#8F9FBF',
-      width: 245,
+      width: 50,
       height: 52,
       fontSize: 18,
       fontWeight: 'bold',
@@ -53,7 +59,7 @@ const styles = StyleSheet.create({
       backgroundColor: 'white',
       borderColor: '#8F9FBF',
       borderWidth: 1,
-      width: 245,
+      width: 50,
       height: 52,
       fontSize: 18,
       fontWeight: 'bold',
