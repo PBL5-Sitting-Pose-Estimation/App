@@ -1,44 +1,68 @@
 import * as React from 'react';
-import { Button, Text, View, TouchableOpacity, Image } from 'react-native';
+import { useState } from 'react';
+import { Text, View, TouchableOpacity, Image, ImageBackground } from 'react-native';
+// import CountDown from 'react-native-countdown-component';
 
 import styles from './style.js'
-// import BottomTab from '../Components/BottomTab.js';
 
 const Home = ({navigation}) => {
-    const checkLogic = () => {
-        
+    const [pause, SetPause] = useState(false)
+    const [path, SetPath] = useState(require('../../Public/pause.png'))
+    const handleStartStop = () => {
+        SetPause(!pause)
+        if(pause){
+            SetPath(require('../../Public/startt.png'))
+        }
+        else{
+            SetPath(require('../../Public/pause.png'))
+        }
     }
+
     return (
         <View style={styles.container}>
-            <View style={styles.head}>
-                <Text style={styles.title}>
-                    01:00:00
-                </Text>
-            </View>
-            <View style={styles.centerImage}>
-                <Image></Image>
-            </View>
-            <View style={styles.foot}>
-                <TouchableOpacity
-                    style={styles.button}
-                    onPress={() => console.log('Start/Stop video')}
-                >
-                    <Image 
-                        style={[styles.image, {borderRadius: 10}]} 
-                        source={require('../../Public/start.png')}>
-                    </Image>
-                </TouchableOpacity>
-                
-                <TouchableOpacity
-                    style={styles.button}
-                    onPress={() => console.log('Cancel video')}
-                >
-                    <Image 
-                        style={[styles.image, {borderRadius: 100}]} 
-                        source={require('../../Public/cancel.png')}>
-                    </Image>
-                </TouchableOpacity>
-            </View>
+            <ImageBackground
+                style={styles.background}
+                source={require('../../Public/camera_background.png')}>
+                    
+                <View style={styles.head}>
+                    <Text style={styles.title}>
+                        {/* <CountDown 
+                            size={30}
+                            until={20}
+                            // onFinish={}
+                            showSeparator
+                            timeToShow={['H', 'M', 'S']}
+                            
+                        /> */}
+                        00:01:00
+                    </Text>
+                </View>
+                <View style={styles.centerImage}>
+                </View>
+                <View style={styles.foot}>
+                    <TouchableOpacity
+                        style={styles.btnStartStop}
+                        onPress={handleStartStop}
+                    >
+                        <Image 
+                            style={[styles.image, {borderRadius: 10}]} 
+                            source={path}
+                            >
+                        </Image>
+                    </TouchableOpacity>
+                    
+                    <TouchableOpacity
+                        style={styles.btnCancel}
+                        onPress={() => navigation.goBack()}
+                    >
+                        <Image 
+                            style={[styles.image, {borderRadius: 100}]} 
+                            source={require('../../Public/cancel.png')}>
+                        </Image>
+                    </TouchableOpacity>
+                </View>
+
+                </ImageBackground>
         </View>
     )
     

@@ -12,7 +12,8 @@ const Stack = createNativeStackNavigator()
 function App() {
   let [fontsLoaded] = useFonts({
     'Grand Hotel': require('./Public/Fonts/GrandHotel-Regular.ttf'),
-    'Nunito': require('./Public/Fonts/Nunito-ExtraBold.ttf')
+    'Nunito': require('./Public/Fonts/Nunito-ExtraBold.ttf'),
+    'Nunito regular': require('./Public/Fonts/Nunito-Regular.ttf'),
   })
 
   if (!fontsLoaded) {
