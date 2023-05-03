@@ -1,6 +1,9 @@
 import * as React from 'react';
 import { Button, Text, View, TouchableOpacity, Image } from 'react-native';
+
 import styles from './style.js'
+// import BottomTab from '../Components/BottomTab.js';
+
 const Home = ({navigation}) => {
     const checkLogic = () => {
         
@@ -22,21 +25,6 @@ const Home = ({navigation}) => {
                 <Image></Image>
             </View>
             <View style={styles.foot}>
-                <TouchableOpacity
-                    onPress={() => navigation.navigate('Home')}
-                >
-                    <Text style={styles.btnLogin}>HOME</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    // onPress={() => navigation.navigate('Home')}
-                >
-                    <Text style={styles.btnRegister}>CAMERA</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    // onPress={() => navigation.navigate('Home')}
-                >
-                    <Text style={styles.btnRegister}>SETTING</Text>
-                </TouchableOpacity>
             </View>
         </View>
     )

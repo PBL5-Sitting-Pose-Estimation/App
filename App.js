@@ -5,7 +5,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {useFonts} from 'expo-font'
 
 import Login from './Pages/Login/index.js'
-import Home from './Pages/Home/index.js'
+import BottomTab from './Pages/Components/BottomTab.js';
 
 const Stack = createNativeStackNavigator()
 
@@ -28,8 +28,8 @@ function App() {
           component={Login}
         />
         <Stack.Screen
-          name="Home"
-          component={Home}
+          name="Bottom"
+          component={BottomTab}
         />
       </Stack.Navigator>
     </NavigationContainer>
