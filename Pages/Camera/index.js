@@ -1,15 +1,20 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Text, View, TouchableOpacity, Image, ImageBackground } from 'react-native';
-// import CountDown from 'react-native-countdown-component';
 
 import styles from './style.js'
 
 const Home = ({navigation}) => {
     const [pause, SetPause] = useState(false)
     const [path, SetPath] = useState(require('../../Public/pause.png'))
-    const handleStartStop = () => {
-        SetPause(!pause)
+    const [timerHours, SetTimerHours] = useState(0)
+    const [timerMinutes, SetTimerMinutes] = useState(0)
+    const [timerSeconds, SetTimerSeconds] = useState(0)
+
+    let interval = null
+
+    const handleStartStop = async () => {
+        await SetPause(!pause)
         if(pause){
             SetPath(require('../../Public/startt.png'))
         }
@@ -17,24 +22,34 @@ const Home = ({navigation}) => {
             SetPath(require('../../Public/pause.png'))
         }
     }
+    
+    useEffect(() => {
+        interval = setInterval(() => {
+            if(pause){
+                SetTimerSeconds(timerSeconds + 1)
+
+                if(timerSeconds === 59){
+                    SetTimerMinutes(timerMinutes + 1)
+                    SetTimerSeconds(0)
+                    
+                    if(timerMinutes === 60){
+                        SetTimerHours(timerHours + 1)
+                        SetTimerMinutes(0)
+                    }
+                }
+            }
+        }, 1000)
+        return () => clearInterval(interval)
+    })
 
     return (
         <View style={styles.container}>
             <ImageBackground
                 style={styles.background}
                 source={require('../../Public/camera_background.png')}>
-                    
                 <View style={styles.head}>
                     <Text style={styles.title}>
-                        {/* <CountDown 
-                            size={30}
-                            until={20}
-                            // onFinish={}
-                            showSeparator
-                            timeToShow={['H', 'M', 'S']}
-                            
-                        /> */}
-                        00:01:00
+                        {timerHours < 10 ? "0"+timerHours : timerHours} : {timerMinutes < 10 ? "0"+timerMinutes : timerMinutes} : {timerSeconds < 10 ? "0"+timerSeconds : timerSeconds}
                     </Text>
                 </View>
                 <View style={styles.centerImage}>
@@ -53,7 +68,17 @@ const Home = ({navigation}) => {
                     
                     <TouchableOpacity
                         style={styles.btnCancel}
-                        onPress={() => navigation.goBack()}
+                        onPress={
+                            () => {
+                                clearInterval(interval)
+                                SetTimerHours(0)
+                                SetTimerMinutes(0)
+                                SetTimerSeconds(0)
+                                SetPause(true)
+                                SetPath(require('../../Public/pause.png'))
+                                navigation.goBack()
+                            }
+                        }
                     >
                         <Image 
                             style={[styles.image, {borderRadius: 100}]} 
