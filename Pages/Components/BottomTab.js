@@ -4,6 +4,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 
 import Home from '../Home/index'
 import Camera from '../Camera/index'
+import Settings from '../Settings/index'
 
 const Tab = createBottomTabNavigator()
 
@@ -132,7 +133,7 @@ const BottomTab = ({navigation}) => {
             />
             <Tab.Screen 
                 name="Settings" 
-                component={Home}
+                component={Settings}
                 options={{
                     tabBarIcon: ({focused}) => (
                         <View style={{alignItems: 'center', justifyContent: 'center', top: 3}}>

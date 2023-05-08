@@ -21,10 +21,12 @@ const styles = StyleSheet.create({
       padding: 10,
       marginHorizontal: 30
     },
-    btnLogin:{
+    btnRegister:{
       borderRadius: 12,
-      color: 'white',
-      backgroundColor: '#8F9FBF',
+      color: '#8F9FBF',
+      backgroundColor: 'white',
+      borderColor: '#8F9FBF',
+      borderWidth: 1,
       width: 245,
       height: 52,
       fontSize: 18,
@@ -33,16 +35,6 @@ const styles = StyleSheet.create({
       textAlignVertical: 'center',
       alignSelf: 'center',
       marginTop: 10
-    },
-    linkRegister:{
-      color: '#8F9FBF',
-      fontSize: 18,
-      fontWeight: 'bold',
-      fontStyle: 'italic',
-      fontFamily: 'Nunito',
-      textAlign: 'right',
-      marginTop: 10,
-      marginEnd: 80
     }
 });
 

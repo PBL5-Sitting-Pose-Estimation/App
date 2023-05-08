@@ -1,13 +1,9 @@
-import * as React from 'react';
-import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-
+import React from 'react';
 import {useFonts} from 'expo-font'
+import { StatusBar } from 'expo-status-bar';
 
-import Login from './Pages/Login/index.js'
-import BottomTab from './Pages/Components/BottomTab.js';
-
-const Stack = createNativeStackNavigator()
+import { AuthProvider } from './Context/AuthContext.js';
+import Navigation from './Pages/Components/Navigation.js'
 
 function App() {
   let [fontsLoaded] = useFonts({
@@ -21,19 +17,10 @@ function App() {
   }
 
   return (
-    <NavigationContainer>
-      <Stack.Navigator
-        screenOptions={{ headerShown: false }}>
-        <Stack.Screen
-          name="Login"
-          component={Login}
-        />
-        <Stack.Screen
-          name="Bottom"
-          component={BottomTab}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <AuthProvider>
+      <StatusBar backgroundColor='#06bcee' />
+      <Navigation />
+    </AuthProvider>
   )
 }
 
