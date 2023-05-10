@@ -3,6 +3,7 @@ import {StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 
 import Home from '../Home/index'
+import Posture from '../Posture/index'
 import Camera from '../Camera/index'
 import Settings from '../Settings/index'
 
@@ -49,7 +50,7 @@ const BottomTab = ({navigation}) => {
             />
             <Tab.Screen 
                 name="Posture" 
-                component={Home}
+                component={Posture}
                 options={{
                     tabBarIcon: ({focused}) => (
                         <View style={{alignItems: 'center', justifyContent: 'center', top: 3}}>

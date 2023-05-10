@@ -12,25 +12,18 @@ const styles = StyleSheet.create({
       fontStyle: 'normal',
       textAlign: 'center'
     },
-    input: {
-      height: 40,
-      margin: 12,
-      borderWidth: 1,
-      borderColor: '#c5c5c5',
-      borderRadius: 10,
-      padding: 10,
-      marginHorizontal: 30
+    scroll: {
+      marginTop: 50
     },
-    btnRegister:{
-      borderRadius: 12,
-      color: '#8F9FBF',
-      backgroundColor: 'white',
-      borderColor: '#8F9FBF',
+    button:{
+      color: 'black',
+      backgroundColor: '#41fca3',
       borderWidth: 1,
-      width: 245,
+      borderRadius: 12,
+      width: '90%',
       height: 52,
       fontSize: 18,
-      fontWeight: 'bold',
+      fontFamily: 'Nunito',
       textAlign: 'center',
       textAlignVertical: 'center',
       alignSelf: 'center',
