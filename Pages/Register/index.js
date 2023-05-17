@@ -1,5 +1,5 @@
 import React, {useContext, useState} from 'react';
-import { Text, View, TouchableOpacity, TextInput } from 'react-native';
+import { Text, View, TouchableOpacity, TextInput, Image } from 'react-native';
 import Spinner from 'react-native-loading-spinner-overlay'
 import styles from './style.js'
 import { AuthContext } from '../../Context/AuthContext.js';
@@ -14,6 +14,15 @@ const Register = ({navigation}) => {
     return (
         <View style={styles.container}>
             <Spinner visible={isLoading}/>
+            <TouchableOpacity 
+                style={styles.backContainer}
+                onPress={() => navigation.goBack()}
+            >
+                <Image
+                    source={require('../../Public/back.png')}
+                    style={styles.backBtn}
+                />
+            </TouchableOpacity>
             <Text style={styles.title}>
                 REGISTER
             </Text>
@@ -36,8 +45,9 @@ const Register = ({navigation}) => {
                 onPress={() => {
                     register(username, password)
                 }}
+                style={styles.btnRegister}
             >
-                <Text style={styles.btnRegister}>REGISTER</Text>
+                <Text style={styles.txtRegister}>REGISTER</Text>
             </TouchableOpacity>
         </View>
     )

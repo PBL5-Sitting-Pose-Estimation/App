@@ -21,13 +21,15 @@ const Main = ({navigation}) => {
             <View style={styles.foot}>
                 <TouchableOpacity
                     onPress={() => navigation.navigate('Login')}
+                    style={styles.btnLogin}
                 >
-                    <Text style={styles.btnLogin}>LOGIN</Text>
+                    <Text style={styles.txtLogin}>LOGIN</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                     onPress={() => navigation.navigate('Register')}
+                    style={styles.btnRegister}
                 >
-                    <Text style={styles.btnRegister}>REGISTER</Text>
+                    <Text style={styles.txtRegister}>REGISTER</Text>
                 </TouchableOpacity>
             </View>
         </View>

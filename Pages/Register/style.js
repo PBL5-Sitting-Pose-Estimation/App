@@ -6,6 +6,15 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       backgroundColor: 'white'
     },
+    backContainer:{
+      position: 'absolute',
+      top: 50,
+      left: 20
+    },
+    backBtn:{
+      width: 25,
+      height: 25
+    },
     title:{
       fontSize: 40,
       fontFamily: 'Nunito',
@@ -23,18 +32,19 @@ const styles = StyleSheet.create({
     },
     btnRegister:{
       borderRadius: 12,
-      color: '#8F9FBF',
       backgroundColor: 'white',
       borderColor: '#8F9FBF',
       borderWidth: 1,
       width: 245,
       height: 52,
+      alignItems: 'center',
+      justifyContent: 'center',
+      alignSelf: 'center'
+    },
+    txtRegister:{
+      color: '#8F9FBF',
       fontSize: 18,
-      fontWeight: 'bold',
-      textAlign: 'center',
-      textAlignVertical: 'center',
-      alignSelf: 'center',
-      marginTop: 10
+      fontWeight: 'bold'
     }
 });
 

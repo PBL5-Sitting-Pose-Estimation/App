@@ -5,7 +5,7 @@ import styles from './style.js'
 // import BottomTab from '../Components/BottomTab.js';
 
 const Home = ({navigation}) => {
-    const {getUsername} = useContext(AuthContext)
+    const {username} = useContext(AuthContext)
     const checkLogic = () => {
         
     }
@@ -16,7 +16,7 @@ const Home = ({navigation}) => {
                     Welcome back,
                 </Text>
                 <Text style={[styles.title, {color: '#8F9FBF'}]}>
-                    {getUsername()}
+                    {username}
                 </Text>
                 <Image style={styles.image} source={require('../../Public/avatar.png')}>
 

@@ -20,7 +20,9 @@ export const AuthProvider = ({children}) => {
             })
             .then(res => {
                 let userInfo = res.data
+                SetUsername(username)
                 SetUserInfo(userInfo)
+                AsyncStorage.setItem('username', username)
                 AsyncStorage.setItem('userInfo', JSON.stringify(userInfo))
                 SetIsLoading(false)
                 console.log(userInfo)
@@ -71,6 +73,7 @@ export const AuthProvider = ({children}) => {
                 console.log(userInfo)
                 SetUsername(username)
                 SetUserInfo(userInfo)
+                AsyncStorage.setItem('username', username)
                 AsyncStorage.setItem('userInfo', JSON.stringify(userInfo))
             }
             else{
@@ -87,6 +90,7 @@ export const AuthProvider = ({children}) => {
     const logout = () => {
         SetIsLoading(true)
 
+        AsyncStorage.removeItem('username')
         AsyncStorage.removeItem('userInfo')
         SetUsername('')
         SetUserInfo({})
@@ -112,9 +116,13 @@ export const AuthProvider = ({children}) => {
 
             let userInfo = await AsyncStorage.getItem('userInfo')
             userInfo = JSON.parse(userInfo)
+            let username = await AsyncStorage.getItem('username')
 
             if(userInfo){
                 SetUserInfo(userInfo)
+            }
+            if(username){
+                SetUsername(username)
             }
 
             SetSplashLoading(false)
@@ -125,10 +133,6 @@ export const AuthProvider = ({children}) => {
         }
     }
 
-    const getUsername = () => {
-        return username
-    }
-
     useEffect(() => {
         isLoggedIn()
     }, [])
@@ -137,11 +141,11 @@ export const AuthProvider = ({children}) => {
         <AuthContext.Provider 
             value={{
                 isLoading,
+                username,
                 userInfo,
                 splashLoading,
                 register,
                 login,
-                getUsername,
                 logout
             }}>
             {children}

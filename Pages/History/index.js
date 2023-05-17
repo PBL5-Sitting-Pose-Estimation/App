@@ -12,7 +12,7 @@ const History = ({navigation}) => {
 
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
-            getHistory()
+            pullMe()
         });
 
         // Return the function to unsubscribe from the event so it gets removed on unmount
@@ -61,8 +61,8 @@ const History = ({navigation}) => {
     //     }
     // ]
     const pullMe = () => {
+        SetHistoryList([])
         SetRefresh(true)
-
         getHistory()
     }
     return (

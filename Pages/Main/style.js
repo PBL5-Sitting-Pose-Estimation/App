@@ -11,12 +11,12 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end'
     },
     title:{
-        fontSize: 90,
+        fontSize: 80,
         fontFamily: 'Grand Hotel',
         fontStyle: 'normal',
         opacity: 1,
         letterSpacing: 8,
-        width: 220,
+        width: '80%',
         height: 131,
         textAlign: 'center',
         textAlignVertical: 'center'
@@ -38,27 +38,31 @@ const styles = StyleSheet.create({
     },
     btnLogin:{
       borderRadius: 12,
-      color: 'white',
       backgroundColor: '#8F9FBF',
       width: 245,
       height: 52,
+      alignItems: 'center',
+      justifyContent: 'center'
+    },
+    txtLogin:{
+      color: 'white',
       fontSize: 18,
-      fontWeight: 'bold',
-      textAlign: 'center',
-      textAlignVertical: 'center'
+      fontWeight: 'bold'
     },
     btnRegister:{
       borderRadius: 12,
-      color: '#8F9FBF',
       backgroundColor: 'white',
       borderColor: '#8F9FBF',
       borderWidth: 1,
       width: 245,
       height: 52,
+      alignItems: 'center',
+      justifyContent: 'center'
+    },
+    txtRegister:{
+      color: '#8F9FBF',
       fontSize: 18,
-      fontWeight: 'bold',
-      textAlign: 'center',
-      textAlignVertical: 'center'
+      fontWeight: 'bold'
     }
 });
 

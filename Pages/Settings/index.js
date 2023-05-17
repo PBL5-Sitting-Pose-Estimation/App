@@ -14,24 +14,29 @@ const Settings = ({navigation}) => {
             <Spinner visible={isLoading}/>
             <ScrollView style={styles.scroll}>
                 <TouchableOpacity
-                    onPress={() => console.log('Doing...')}>
-                    <Text style={styles.button}>Change password</Text>
+                    onPress={() => console.log('Doing...')}
+                    style={styles.button}>
+                    <Text style={styles.txtButton}>Change password</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                    onPress={() => console.log('Doing...')}>
-                    <Text style={styles.button}>Change time between detect times</Text>
+                    onPress={() => console.log('Doing...')}
+                    style={styles.button}>
+                    <Text style={styles.txtButton}>Change time between detect times</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                    onPress={() => console.log('Doing...')}>
-                    <Text style={styles.button}>Turn off the warning sound</Text>
+                    onPress={() => console.log('Doing...')}
+                    style={styles.button}>
+                    <Text style={styles.txtButton}>Turn off the warning sound</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                    onPress={() => console.log('Doing...')}>
-                    <Text style={styles.button}>Turn on the notification light</Text>
+                    onPress={() => console.log('Doing...')}
+                    style={styles.button}>
+                    <Text style={styles.txtButton}>Turn on the notification light</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                    onPress={logout}>
-                    <Text style={styles.button}>Logout</Text>
+                    onPress={logout}
+                    style={styles.button}>
+                    <Text style={styles.txtButton}>Logout</Text>
                 </TouchableOpacity>
             </ScrollView>
             

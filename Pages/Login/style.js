@@ -6,6 +6,15 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       backgroundColor: 'white'
     },
+    backContainer:{
+      position: 'absolute',
+      top: 50,
+      left: 20
+    },
+    backBtn:{
+      width: 25,
+      height: 25
+    },
     title:{
       fontSize: 40,
       fontFamily: 'Nunito',
@@ -23,16 +32,19 @@ const styles = StyleSheet.create({
     },
     btnLogin:{
       borderRadius: 12,
-      color: 'white',
       backgroundColor: '#8F9FBF',
       width: 245,
       height: 52,
-      fontSize: 18,
-      fontWeight: 'bold',
-      textAlign: 'center',
-      textAlignVertical: 'center',
       alignSelf: 'center',
-      marginTop: 10
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginTop: 10,
+      overflow: 'hidden'
+    },
+    txtLogin:{
+      color: 'white',
+      fontSize: 18,
+      fontWeight: 'bold'
     },
     linkRegister:{
       color: '#8F9FBF',

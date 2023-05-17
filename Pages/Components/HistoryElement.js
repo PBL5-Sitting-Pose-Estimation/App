@@ -1,9 +1,18 @@
-import React, {useEffect, useState} from 'react';
-import { Text, View, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import React, {useEffect, useState, useMemo} from 'react';
+import { Alert, Modal, Text, View, StyleSheet, Image, TouchableOpacity } from 'react-native';
+// import Toast from 'react-native-simple-toast';
+import RadioGroup from 'react-native-radio-buttons-group';
+import ExpoFastImage from 'expo-fast-image';
+
 import { API_URL } from '../../Utils/constants.js'
 
 const HistoryElement = (props) => {
     const [content, SetContent] = useState('')
+    const [modalVisible, SetModalVisible] = useState(false);
+    const [buttonType, SetButtonType] = useState(true)
+    const [isVisible, SetIsVisible] = useState(false)
+    const [selectedId, setSelectedId] = useState()
+    const [trueLabel, SetTrueLabel] = useState(true)
     
     const colorList = {'Warning':'#ffba13', 'Compliment':'#006400'}
     const borderColor = {'Wrong':'red', 'Correct':'green'}
@@ -30,11 +39,43 @@ const HistoryElement = (props) => {
 
     const basePath = API_URL + 'history/img/'
 
-    useEffect(() => {
-        // console.log(basePath + props.item.path)
-        // console.log(props.item)
-        // console.log(props.item.predict_label)
-    }, [])
+    const radioButtons = useMemo(() => ([
+        {
+            id : 1, // acts as primary key, should be unique and non-empty string
+            label: 'Gac chan',
+            value: 'Gac chan'
+        },
+        {
+            id : 2,
+            label: 'Thang lung',
+            value: 'Thang lung'
+        },
+        {
+            id : 3,
+            label: 'Gu lung',
+            value: 'Gu lung'
+        },
+        {
+            id : 4,
+            label: 'Nghieng nguoi',
+            value: 'Nghieng nguoi'
+        },
+        {
+            id : 5,
+            label: 'Ngu gat',
+            value: 'Ngu gat'
+        },
+        {
+            id : 6,
+            label: 'Ngoi xom',
+            value: 'Ngoi xom'
+        },
+        {
+            id : 7,
+            label: 'Nga lung',
+            value: 'Nga lung'
+        }
+    ]), []);
     
 
     const handleMoreView = () => {
@@ -47,6 +88,20 @@ const HistoryElement = (props) => {
         }
     }
 
+    const handleCorrectBtn = () => {
+        // Toast.show('Update predict information successfully!', 2)
+        SetModalVisible(true)
+        SetButtonType(true)
+    }
+    const handleWrongBtn = () => {
+        SetModalVisible(true)
+        SetButtonType(false)
+    }
+    const handleChangeInfor = () => {
+        // Toast.show('Update predict information successfully!', 2)
+        SetIsVisible(true)
+    }
+
     return (
         <View style={[styles.container, {borderTopColor: borderColor[notify[props.item.predict_label][0]]}]}>
             <Text 
@@ -54,10 +109,12 @@ const HistoryElement = (props) => {
             <Text
                 style={styles.moreView}
                 onPress={handleMoreView}
-                >View more</Text>
+            >
+                View more
+            </Text>
             <Text
                 style={[styles.content, {height: (content==='')? 0 : 'auto'}]}
-                >{contentSample[props.item.predict_label]}</Text>
+            >{contentSample[props.item.predict_label]}</Text>
 
             <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between'}}>
                 <Text
@@ -70,18 +127,100 @@ const HistoryElement = (props) => {
             <Image
                 source={{uri: basePath + props.item.path}}
                 style={styles.image}
+                cacheKey={props.item.path}
+                fadeDuration={0}
              />
-             <View style={styles.foot}>
-                <Text style={{fontSize: 17, fontStyle: 'italic'}}>Predict?</Text>
-                <TouchableOpacity
-                    // onPress={hna}
-                    >
-                        <Text style={styles.btnCorrect}>Correct</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    >
-                        <Text style={styles.btnWrong}>Wrong</Text>
-                </TouchableOpacity>
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={modalVisible}
+                onRequestClose={() => {
+                    Alert.alert('Modal has been closed.');
+                    SetModalVisible(!modalVisible);
+                }}>
+                <View style={styles.centeredView}>
+                <View style={styles.modalView}>
+                    {
+                    buttonType? (
+                        <>
+                        <Text style={styles.modalText}>Are you sure to confirm this prediction is correct?</Text>
+                        <View style={styles.foot}>
+                            <TouchableOpacity
+                                onPress={() => {
+                                    SetModalVisible(!modalVisible)
+                                    SetTrueLabel(true)
+                                    SetIsVisible(false)
+                                }}
+                            >
+                                <Text style={styles.btnConfirm}>Confirm</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={() => SetModalVisible(!modalVisible)}
+                            >
+                                <Text style={styles.btnCancel}>Cancel</Text>
+                            </TouchableOpacity>
+                        </View>
+                        </>
+                    )
+                    : (
+                        <>
+                        <Text style={styles.modalText}>Choose the label you think is right for this pose!</Text>               
+                        <RadioGroup 
+                            radioButtons={radioButtons} 
+                            onPress={setSelectedId}
+                            selectedId={selectedId}
+                            containerStyle={styles.gpRadio}
+                        />
+                        <View style={styles.foot}>
+                            <TouchableOpacity
+                                onPress={() => {
+                                    SetModalVisible(!modalVisible)
+                                    SetTrueLabel(false)
+                                    SetIsVisible(false)
+                                }}>
+                            <Text style={styles.btnConfirm}>Confirm</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={() => SetModalVisible(!modalVisible)}>
+                            <Text style={styles.btnCancel}>Cancel</Text>
+                            </TouchableOpacity>
+                        </View>
+                        </>
+                    )
+                    }
+                </View>
+                </View>
+            </Modal>
+             <View style={[styles.foot, {flex: 1}]}>
+            {
+                isVisible? (
+                    <>
+                        <Text style={{fontSize: 17, fontStyle: 'italic'}}>Predict?</Text>
+                        <TouchableOpacity
+                            onPress={() => handleCorrectBtn()}
+                        >
+                            <Text style={styles.btnCorrect}>Correct</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() => handleWrongBtn()}
+                        >
+                            <Text style={styles.btnWrong}>Wrong</Text>
+                        </TouchableOpacity>
+                    </>
+                )
+                : (
+                    <>
+                        <Text style={[styles.inforText1, {color: trueLabel? 'green':'red'}]}>
+                            {trueLabel? 'This is a correct predict!' : `This is a wrong predict!\n(True label: ${radioButtons[selectedId-1].value})`}
+                        </Text>
+                        <Text
+                            style={styles.inforText2}
+                            onPress={() => handleChangeInfor()}
+                        >Change</Text>
+                    </>
+                )
+            }
+                
              </View>
         </View>
     )
@@ -126,7 +265,6 @@ const styles = StyleSheet.create({
         height: 300
     },
     foot: {
-        flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
@@ -139,21 +277,88 @@ const styles = StyleSheet.create({
         width: 80,
         textAlign: 'center',
         paddingVertical: 6,
-        borderWidth: 1,
         borderRadius: 10,
         color: 'white',
-        backgroundColor: '#00e277'
+        backgroundColor: '#00e277',
+        overflow: 'hidden'
     },
     btnWrong:{
         padding: 10,
         width: 80,
         textAlign: 'center',
         paddingVertical: 6,
-        borderWidth: 1,
         borderRadius: 10,
         color: 'white',
-        backgroundColor: '#ff3442'
-    }
+        backgroundColor: '#ff3442',
+        overflow: 'hidden'
+    },
+    inforText1: {
+        fontSize: 14,
+        fontStyle: 'italic',
+        marginEnd: 20
+    },
+    inforText2: {
+        fontSize: 17,
+        textDecorationLine: 'underline',
+        color: 'blue'
+    },
+
+    gpRadio:{
+        alignItems: 'flex-start'
+    },
+    centeredView: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 22,
+    },
+    modalView: {
+        margin: 20,
+        backgroundColor: 'white',
+        borderRadius: 10,
+        padding: 20,
+        alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5,
+        borderWidth: 2,
+        // borderColor: 'green'
+        backgroundColor: '#fce5cd'
+    },
+    btnConfirm: {
+        marginStart: 20,
+        padding: 10,
+        width: 80,
+        textAlign: 'center',
+        paddingVertical: 6,
+        borderRadius: 10,
+        color: 'black',
+        backgroundColor: '#00e277',
+        marginTop: 10,
+        overflow: 'hidden'
+    },
+    btnCancel: {
+        marginStart: 20,
+        padding: 10,
+        width: 80,
+        textAlign: 'center',
+        paddingVertical: 6,
+        borderRadius: 10,
+        color: 'black',
+        backgroundColor: '#ff3442',
+        marginTop: 10,
+        overflow: 'hidden'
+    },
+    modalText: {
+        marginBottom: 15,
+        textAlign: 'center',
+        fontSize: 15
+    },
 })
 
 export default HistoryElement;
