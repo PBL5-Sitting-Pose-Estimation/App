@@ -6,6 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 export const AuthContext = createContext()
 
 export const AuthProvider = ({children}) => {
+    const [username, SetUsername] = useState('')
     const [userInfo, SetUserInfo] = useState({})
     const [isLoading, SetIsLoading] = useState(false)
     const [splashLoading, SetSplashLoading] = useState(false)
@@ -33,28 +34,61 @@ export const AuthProvider = ({children}) => {
     const login = (username, password) => {
         SetIsLoading(true)
 
-        axios
-            .post(API_URL + 'auth/login', {
-                username,
-                password
-            })
-            .then(res => {
-                let userInfo = res.data
+        // axios
+        //     .post(API_URL + 'auth/login', {
+        //         username,
+        //         password
+        //     })
+        //     .then(res => {
+        //         let userInfo = res.data
+        //         console.log(userInfo)
+        //         SetUserInfo(userInfo)
+        //         AsyncStorage.setItem('userInfo', JSON.stringify(userInfo))
+        //         SetIsLoading(false)
+        //     })
+        //     .catch(e => {
+        //         console.log(`login error: ${e}`)
+        //         SetIsLoading(false)
+        //     })
+
+        return fetch(API_URL + 'auth/login', {
+            method: 'POST', // *GET, POST, PUT, DELETE, etc.
+            mode: 'cors', // no-cors, cors, *same-origin
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: 'same-origin', // include, *same-origin, omit
+            headers: {
+                'Content-Type': 'application/json',
+                // 'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            redirect: 'follow', // manual, *follow, error
+            referrer: 'no-referrer', // no-referrer, *client
+            body: JSON.stringify({username: username, password: password}), // body data type must match "Content-Type" header
+        })
+        .then(res => res.json())
+        .then(res => {
+            if(res.success){
+                let userInfo = {"access_token":res.access_token}
                 console.log(userInfo)
+                SetUsername(username)
                 SetUserInfo(userInfo)
                 AsyncStorage.setItem('userInfo', JSON.stringify(userInfo))
-                SetIsLoading(false)
-            })
-            .catch(e => {
-                console.log(`login error: ${e}`)
-                SetIsLoading(false)
-            })
+            }
+            else{
+                console.log(res.message)
+            }
+            SetIsLoading(false)
+        })
+        .catch(e => {
+            console.log(`login error: ${e}`)
+            SetIsLoading(false)
+        })
     }
 
     const logout = () => {
         SetIsLoading(true)
 
         AsyncStorage.removeItem('userInfo')
+        SetUsername('')
         SetUserInfo({})
         SetIsLoading(false)
         // axios.post(API_URL + '/logout', 
@@ -91,6 +125,10 @@ export const AuthProvider = ({children}) => {
         }
     }
 
+    const getUsername = () => {
+        return username
+    }
+
     useEffect(() => {
         isLoggedIn()
     }, [])
@@ -103,6 +141,7 @@ export const AuthProvider = ({children}) => {
                 splashLoading,
                 register,
                 login,
+                getUsername,
                 logout
             }}>
             {children}

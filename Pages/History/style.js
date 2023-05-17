@@ -7,17 +7,24 @@ const styles = StyleSheet.create({
       marginTop: 15
     },
     head:{
-        flex: 1.2,
         paddingStart: 20,
-        justifyContent: 'center'
+        marginTop: 30
     },
     title:{
-        fontSize: 20,
-        fontFamily: 'Nunito',
-        fontStyle: 'normal',
-        opacity: 1,
-        color: '#8F9FBF',
-        width: 334
+      fontSize: 30,
+      fontFamily: 'Nunito',
+      fontStyle: 'normal',
+      opacity: 1,
+      color: '#8F9FBF',
+      width: 334
+    },
+    infor:{
+      fontSize: 15,
+      fontFamily: 'Nunito regular',
+      fontStyle: 'italic',
+      opacity: 1,
+      color: 'green',
+      marginBottom: 10
     },
     centerImage:{
       flex: 3.8,

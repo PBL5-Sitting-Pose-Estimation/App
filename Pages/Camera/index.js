@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import { Text, View, TouchableOpacity, Image, AppRegistry, ScrollView } from 'react-native';
+import { Text, View, TouchableOpacity, Image } from 'react-native';
 import { API_URL } from '../../Utils/constants.js'
-import axios from "axios";
 import styles from './style.js'
 // import FastImage from 'react-native-fast-image';
 import ExpoFastImage from 'expo-fast-image';
@@ -20,6 +19,15 @@ const Camera = ({navigation}) => {
     const handleStartStop = () => {
         SetPause(!pause)
     }
+
+    useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+            SetPause(false)
+        });
+
+        // Return the function to unsubscribe from the event so it gets removed on unmount
+        return unsubscribe;
+    }, [navigation]);
 
     useEffect(() => {
         // console.log(pause)
@@ -50,67 +58,49 @@ const Camera = ({navigation}) => {
         return () => clearInterval(interval)
     })
 
-    // *************************************
-    const [time, setTime] = useState(Date.now());
-    const [src, setSrc] = useState('../../Public/avatar.png')
+    // const [time, setTime] = useState(Date.now());
+    // const [src, setSrc] = useState('../../Public/avatar.png')
+    const [image, setImage] = useState(`${API_URL}getImage`)
 
-    // var RNFetchBlob = require('rn-fetch-blob').default
-
-    // const getImageAttachment = () => {
-    //     return new Promise((resolve, reject) => {
-    //         RNFetchBlob.fetch('GET', API_URL + 'getImage')
-    //         .then((response) => {
-    //             let base64Str = response.data;
-    //             var imageBase64 = 'data:image/png;base64,' + base64Str;
-    //             // Return base64 image
-    //             setSrc(imageBase64)
-    //             resolve(imageBase64)
+    // //C1
+    // useEffect(() => {
+    //     const interval = setInterval(() => {
+    //         if(!pause){
+    //             setTime(Date.now())
+    //             setSrc("https://pbl5server.onrender.com/api/getImage?" + time)
+    //             // console.log(src + ", " + time)
     //         }
-    //         )
-    //         .catch((error) => {
-    //             // error handling
-    //             console.log("Error: ", error)
-    //             reject(error)
-    //         });
-    //     })
+    //     }, 1000);
+    //     return () => {
+    //         clearInterval(interval);
+    //     };
+    // });
+
+    // //C2
+    // const getAquariumImageSource = (id) => {
+    //     return {
+    //         uri: `${API_URL}getImage?${id}`,
+    //         method: "GET",
+    //         headers: {
+    //             Pragma: "no-cache"
+    //         },
+    //         cache: "reload"
+    //     }
     // }
 
-    useEffect(() => {
-        const interval = setInterval(() => {
-            if(!pause){
-                setTime(Date.now())
-                setSrc("https://pbl5server.onrender.com/api/getImage?" + time)
-                // console.log(src + ", " + time)
-            }
-        }, 1000);
-        return () => {
-            clearInterval(interval);
-        };
-    });
+    // Cách tốt nhất
+    fetch(API_URL+'getImage')
+        .then(response => response.blob())
+        .then(blob => {
+            const reader = new FileReader();
+            reader.readAsDataURL(blob);
+            reader.onloadend = () => {
+                const base64data = reader.result;
+                setImage(base64data);
+            };
+        });
 
-    useEffect(() => {
-        if(pause){
-            
-        }
-        else{
-            
-        }
-    }, [time])
 
-    // useEffect(getImageAttachment, [time])
-
-    // *************************************
-
-    const getAquariumImageSource = (id) => {
-        return {
-            uri: `${API_URL}getImage?${id}`,
-            method: "GET",
-            headers: {
-                Pragma: "no-cache"
-            },
-            cache: "reload"
-        }
-    }
 
     return (
         <View style={styles.container}>
@@ -125,9 +115,8 @@ const Camera = ({navigation}) => {
                 </View>
                 <View style={styles.centerImage}>      
                     <Image
-                        key={src}
                         style={styles.background}
-                        source={{uri: src}}
+                        source={{ uri: image }}
                         fadeDuration={0}
                     />                    
                     {/* <ExpoFastImage
@@ -140,11 +129,10 @@ const Camera = ({navigation}) => {
                     /> */}
                     {/* <CachedImage
                         source={{uri:src}} // image address
-                        cacheKey={time.toString()} // could be a unque id
+                        cacheKey={time.toString()} // could be a unique id
                         style={styles.background}
                     // any supported props by Image
                     /> */}
-                    {/* CachedImage(src) */}
                 </View>
                 <View style={styles.foot}>
                     <TouchableOpacity
@@ -167,7 +155,6 @@ const Camera = ({navigation}) => {
                                 SetTimerMinutes(0)
                                 SetTimerSeconds(0)
                                 SetPause(true)
-                                SetPath(require('../../Public/pause.png'))
                                 navigation.goBack()
                             }
                         }

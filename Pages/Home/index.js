@@ -1,10 +1,11 @@
-import * as React from 'react';
+import React, {useContext} from 'react';
 import { Button, Text, View, TouchableOpacity, Image } from 'react-native';
-
+import { AuthContext } from '../../Context/AuthContext.js';
 import styles from './style.js'
 // import BottomTab from '../Components/BottomTab.js';
 
 const Home = ({navigation}) => {
+    const {getUsername} = useContext(AuthContext)
     const checkLogic = () => {
         
     }
@@ -15,7 +16,7 @@ const Home = ({navigation}) => {
                     Welcome back,
                 </Text>
                 <Text style={[styles.title, {color: '#8F9FBF'}]}>
-                    Thxnhi!
+                    {getUsername()}
                 </Text>
                 <Image style={styles.image} source={require('../../Public/avatar.png')}>
 

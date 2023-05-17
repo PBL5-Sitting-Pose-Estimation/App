@@ -6,14 +6,9 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       backgroundColor: 'white'
     },
-    background:{
-      width: '100%',
-      height: '80%',
-    },
     head:{
         flex: 1.2,
-        alignItems: 'center',
-        paddingTop: 20
+        alignItems: 'center'
     },
     title:{
         fontSize: 16,
@@ -23,10 +18,16 @@ const styles = StyleSheet.create({
         letterSpacing: 0.4,
         paddingHorizontal: 7,
         backgroundColor: '#466cb6',
-        borderRadius: 5
+        borderRadius: 5,
+        marginTop: 50
     },
     centerImage:{
-      flex: 3.6
+      flex: 3.6,
+      justifyContent: 'center'
+    },
+    background:{
+      width: '100%',
+      height: '80%',
     },
     image:{
       width: 35,
