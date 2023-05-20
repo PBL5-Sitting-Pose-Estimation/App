@@ -15,6 +15,15 @@ const styles = StyleSheet.create({
       width: 25,
       height: 25
     },
+    waitingCircle:{
+      position: 'absolute',
+      top: 0, 
+      left: 0, 
+      right: 0,
+      bottom: 0,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
     title:{
       fontSize: 40,
       fontFamily: 'Nunito',

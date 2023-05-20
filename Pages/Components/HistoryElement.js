@@ -3,6 +3,8 @@ import { Alert, Modal, Text, View, StyleSheet, Image, TouchableOpacity } from 'r
 // import Toast from 'react-native-simple-toast';
 import RadioGroup from 'react-native-radio-buttons-group';
 import ExpoFastImage from 'expo-fast-image';
+import * as Speech from 'expo-speech';
+import axios from "axios"
 
 import { API_URL } from '../../Utils/constants.js'
 
@@ -10,9 +12,11 @@ const HistoryElement = (props) => {
     const [content, SetContent] = useState('')
     const [modalVisible, SetModalVisible] = useState(false);
     const [buttonType, SetButtonType] = useState(true)
-    const [isVisible, SetIsVisible] = useState(false)
-    const [selectedId, setSelectedId] = useState()
-    const [trueLabel, SetTrueLabel] = useState(true)
+    const [isVisible, SetIsVisible] = useState(true)
+    const [warning, SetWarning] = useState('')
+    const [userLabel, SetUserLabel] = useState(props.item.user_label)
+
+    let count = 0
     
     const colorList = {'Warning':'#ffba13', 'Compliment':'#006400'}
     const borderColor = {'Wrong':'red', 'Correct':'green'}
@@ -76,7 +80,6 @@ const HistoryElement = (props) => {
             value: 'Nga lung'
         }
     ]), []);
-    
 
     const handleMoreView = () => {
         if (content === ''){
@@ -87,25 +90,147 @@ const HistoryElement = (props) => {
             SetContent('')
         }
     }
+    const [open, SetOpen] = useState(true)
 
     const handleCorrectBtn = () => {
         // Toast.show('Update predict information successfully!', 2)
         SetModalVisible(true)
         SetButtonType(true)
+        // open = true
+        SetOpen(true)
+        // console.log(open)
     }
     const handleWrongBtn = () => {
         SetModalVisible(true)
         SetButtonType(false)
+        // open = true
+        SetOpen(true)
+        // console.log(open)
     }
     const handleChangeInfor = () => {
         // Toast.show('Update predict information successfully!', 2)
+        // open = false
+        SetOpen(false)
         SetIsVisible(true)
     }
 
+    useEffect(() => {
+        if(open == false){
+            setTimeout(() => {
+                if(!modalVisible){
+                    SetIsVisible(false)
+                    // console.log(open)
+                }
+            }, 1000)
+        }
+    }, [open])
+
+    const handleConfirmCorrect = (id) => {
+        SetModalVisible(!modalVisible)
+        SetIsVisible(false)
+        axios
+            .post(API_URL + 'fb', {
+                id: id,
+                user_label: props.item.predict_label
+            })
+            .then(res => {
+                console.log(res.data)
+                SetUserLabel(props.item.predict_label)
+            })
+            .catch(e => {
+                console.log(`post userLabel (correct) error ${e}`)
+            })
+    }
+
+    const handleConfirmWrong = (id) => {
+        SetModalVisible(!modalVisible)
+        SetIsVisible(false)
+        axios
+            .post(API_URL + 'fb', {
+                id: id,
+                user_label: radioButtons[selectedId-1].value
+            })
+            .then(res => {
+                console.log(res.data)
+                SetUserLabel(radioButtons[selectedId-1].value)
+            })
+            .catch(e => {
+                console.log(`post userLabel (wrong) error ${e}`)
+            })
+    }
+
+    const parseDate = (str) => {
+        let date = str.split('_')[0]
+        let time = str.split('_')[1].replaceAll('-', ':').slice(0, -7)
+        // console.log(date + ", " + time)
+        d = new Date(Date.parse(date))
+        // console.log(d.toLocaleDateString())
+        return time + ' ' + d.toLocaleDateString()
+    }
+
+    const getId = () => {
+        value = props.item.predict_label
+        if (props.item.user_label !== '')
+            value = props.item.user_label
+
+        return radioButtons.find(item => item.value === value).id
+    }
+
+    const [selectedId, setSelectedId] = useState(getId())
+
+    useEffect(() => {
+        // console.log(props.item)
+        if(props.item.got_feedback){
+            SetIsVisible(false)
+        }
+    }, [])
+
     return (
         <View style={[styles.container, {borderTopColor: borderColor[notify[props.item.predict_label][0]]}]}>
-            <Text 
-                style={styles.title}>{`${props.item.predict_label} (${notify[props.item.predict_label][0]})`}</Text>
+            <View style={{flexDirection: 'row', gap: 20}}>
+                <Text 
+                    style={styles.title}>{`${props.item.predict_label} (${notify[props.item.predict_label][0]})`}</Text>
+                    <TouchableOpacity                        
+                        onPress={() => {
+                            count += 1
+                            let support = false
+                            if(count == 1){
+                                Speech.getAvailableVoicesAsync().then(voices => {
+                                    for(voice of voices){
+                                        if(voice['language'].toString() === 'vi-VN') support = true
+                                    }
+                                    if(support){
+                                        Speech.speak(contentSample[props.item.predict_label],{
+                                            language: 'vi-VN',
+                                            pitch: 1,
+                                            rate: 1.0,
+                                            // voice: 'com.apple.ttsbundle.Samantha-compact',
+                                            onDone: () => {count = 0}
+                                        });
+                                    }
+                                    else{
+                                        count = 0
+                                        SetWarning('Your phone not support Vietnamese voice! You can fix this by change your device text-to-speech engine to google!')
+                                        
+                                        setTimeout(() => {
+                                            SetWarning('')
+                                        }, 4000)
+                                    }
+                                });
+                            }
+                            if(count == 2){
+                                count = 0
+                                Speech.stop()
+                            }
+                        }}
+                    >                                
+                        <Image
+                            style={styles.imgSpeaker}
+                            source={require('../../Public/megaphone.png')}
+                        />
+                    </TouchableOpacity>
+            </View>
+            <Text style={{color: 'red', height: (warning === '')? 0:'auto'}}>{warning}</Text>
             <Text
                 style={styles.moreView}
                 onPress={handleMoreView}
@@ -122,7 +247,7 @@ const HistoryElement = (props) => {
                     >{notify[props.item.predict_label][1]}</Text>
                 <Text
                     style={styles.datetime}
-                    >{props.item.detect_date}</Text>
+                    >{parseDate(props.item.detect_date)}</Text>
             </View>
             <Image
                 source={{uri: basePath + props.item.path}}
@@ -135,7 +260,7 @@ const HistoryElement = (props) => {
                 transparent={true}
                 visible={modalVisible}
                 onRequestClose={() => {
-                    Alert.alert('Modal has been closed.');
+                    // Alert.alert('Modal has been closed.');
                     SetModalVisible(!modalVisible);
                 }}>
                 <View style={styles.centeredView}>
@@ -146,16 +271,15 @@ const HistoryElement = (props) => {
                         <Text style={styles.modalText}>Are you sure to confirm this prediction is correct?</Text>
                         <View style={styles.foot}>
                             <TouchableOpacity
-                                onPress={() => {
-                                    SetModalVisible(!modalVisible)
-                                    SetTrueLabel(true)
-                                    SetIsVisible(false)
-                                }}
+                                onPress={() => handleConfirmCorrect(props.item._id)}
                             >
                                 <Text style={styles.btnConfirm}>Confirm</Text>
                             </TouchableOpacity>
                             <TouchableOpacity
-                                onPress={() => SetModalVisible(!modalVisible)}
+                                onPress={() => {
+                                    SetModalVisible(!modalVisible)                                    
+                                    SetOpen(false)
+                                }}
                             >
                                 <Text style={styles.btnCancel}>Cancel</Text>
                             </TouchableOpacity>
@@ -173,15 +297,14 @@ const HistoryElement = (props) => {
                         />
                         <View style={styles.foot}>
                             <TouchableOpacity
-                                onPress={() => {
-                                    SetModalVisible(!modalVisible)
-                                    SetTrueLabel(false)
-                                    SetIsVisible(false)
-                                }}>
+                                onPress={() => handleConfirmWrong(props.item._id)}>
                             <Text style={styles.btnConfirm}>Confirm</Text>
                             </TouchableOpacity>
                             <TouchableOpacity
-                                onPress={() => SetModalVisible(!modalVisible)}>
+                                onPress={() => {
+                                    SetModalVisible(!modalVisible)
+                                    SetOpen(false)
+                                }}>
                             <Text style={styles.btnCancel}>Cancel</Text>
                             </TouchableOpacity>
                         </View>
@@ -210,8 +333,8 @@ const HistoryElement = (props) => {
                 )
                 : (
                     <>
-                        <Text style={[styles.inforText1, {color: trueLabel? 'green':'red'}]}>
-                            {trueLabel? 'This is a correct predict!' : `This is a wrong predict!\n(True label: ${radioButtons[selectedId-1].value})`}
+                        <Text style={[styles.inforText1, {color: props.item.predict_label == userLabel? 'green':'red'}]}>
+                            {props.item.predict_label == userLabel? 'This is a correct predict!' : `This is a wrong predict!\n(True label: ${userLabel})`}
                         </Text>
                         <Text
                             style={styles.inforText2}
@@ -244,6 +367,10 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 20,
         fontWeight: 'bold',
+    },
+    imgSpeaker:{
+        width: 20,
+        height: 20
     },
     moreView: {
         textDecorationLine: 'underline',

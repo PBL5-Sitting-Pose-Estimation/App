@@ -1,5 +1,5 @@
 import React, {useContext, useState} from 'react';
-import { Text, View, TouchableOpacity, Linking, TextInput, Image } from 'react-native';
+import { Text, View, TouchableOpacity, Linking, TextInput, Image, ActivityIndicator } from 'react-native';
 import Spinner from 'react-native-loading-spinner-overlay'
 import { AuthContext } from '../../Context/AuthContext.js';
 import styles from './style.js'
@@ -15,7 +15,13 @@ const Login = ({navigation}) => {
 
     return (
         <View style={styles.container}>
-            <Spinner visible={isLoading}/>
+            {
+                isLoading && (
+                    <View style={styles.waitingCircle}>
+                        <ActivityIndicator size="large" color="gray"/>
+                    </View>
+                )
+            }
             <TouchableOpacity 
                 style={styles.backContainer}
                 onPress={() => navigation.goBack()}

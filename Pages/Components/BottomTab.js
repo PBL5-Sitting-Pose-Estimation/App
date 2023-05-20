@@ -42,7 +42,7 @@ const BottomTab = ({navigation}) => {
                                 }}
                             />
                             <Text
-                                style={{color: focused ? '#e32f45' : '#748c94'}}>
+                                style={{color: focused ? '#e32f45' : '#748c94', fontSize: 13}}>
                                     HOME
                             </Text>
                         </View>
@@ -65,7 +65,7 @@ const BottomTab = ({navigation}) => {
                                 }}
                             />
                             <Text
-                                style={{color: focused ? '#e32f45' : '#748c94'}}>
+                                style={{color: focused ? '#e32f45' : '#748c94', fontSize: 13}}>
                                     POSTURE
                             </Text>
                         </View>
@@ -92,7 +92,7 @@ const BottomTab = ({navigation}) => {
                                     top: -20,
                                     justifyContent: 'center',
                                     alignItems: 'center',
-                                    ...styles.shadow
+                                    // ...styles.shadow
                                 }}
                                 onPress={props.onPress}
                             >
@@ -126,7 +126,7 @@ const BottomTab = ({navigation}) => {
                                 }}
                             />
                             <Text
-                                style={{color: focused ? '#e32f45' : '#748c94'}}>
+                                style={{color: focused ? '#e32f45' : '#748c94', fontSize: 13}}>
                                     HISTORY
                             </Text>
                         </View>
@@ -149,7 +149,7 @@ const BottomTab = ({navigation}) => {
                                 }}
                             />
                             <Text
-                                style={{color: focused ? '#e32f45' : '#748c94'}}>
+                                style={{color: focused ? '#e32f45' : '#748c94', fontSize: 13}}>
                                     SETTINGS
                             </Text>
                         </View>
