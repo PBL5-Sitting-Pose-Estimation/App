@@ -19,7 +19,8 @@ const styles = StyleSheet.create({
         paddingHorizontal: 7,
         backgroundColor: '#466cb6',
         borderRadius: 5,
-        marginTop: 50
+        marginTop: 50,
+        overflow: 'hidden'
     },
     centerImage:{
       flex: 3.6,
